@@ -1,13 +1,21 @@
 """
 student.py
-Student class with course enrollment, grading, GPA calculation, and validation.
+
+Defines the Student class which extends Person.
+Includes course enrollment, grade management, GPA calculation,
+academic status evaluation, and data validation.
 """
 
 from __future__ import annotations
+
 from person import Person
 
 
 class Student(Person):
+    """
+    Represents a student in the university system.
+    """
+
     MAX_COURSES_PER_SEMESTER = 6
 
     def __init__(
@@ -26,11 +34,11 @@ class Student(Person):
         self.enrollment_date = enrollment_date
 
         self.enrolled_courses: list[str] = []
-        self._grades: dict[str, float] = {}  # course_code -> grade (0.0 - 4.0)
+        self._grades: dict[str, float] = {}  # course_code -> grade (0.0 to 4.0)
 
     def enroll_course(self, course_code: str) -> None:
         """
-        Enroll in a course code, with max course limit validation.
+        Enroll the student in a course (max 6 courses per semester).
         """
         course_code = course_code.strip().upper()
 
@@ -46,12 +54,13 @@ class Student(Person):
 
     def add_grade(self, course_code: str, grade: float) -> None:
         """
-        Add a grade for an enrolled course. Grade must be between 0.0 and 4.0.
+        Record a grade for an enrolled course.
+        Grade must be between 0.0 and 4.0.
         """
         course_code = course_code.strip().upper()
 
         if course_code not in self.enrolled_courses:
-            raise ValueError(f"Cannot add grade. Student not enrolled in {course_code}.")
+            raise ValueError(f"Cannot add grade: not enrolled in {course_code}.")
 
         if not (0.0 <= grade <= 4.0):
             raise ValueError("Grade must be between 0.0 and 4.0.")
@@ -60,8 +69,8 @@ class Student(Person):
 
     def calculate_gpa(self) -> float:
         """
-        Calculate cumulative GPA from recorded grades.
-        If no grades exist yet, return 0.0.
+        Calculate cumulative GPA based on recorded grades.
+        If no grades, return 0.0.
         """
         if not self._grades:
             return 0.0
@@ -70,7 +79,7 @@ class Student(Person):
     @property
     def gpa(self) -> float:
         """
-        Read-only GPA property (calculated, cannot be directly set).
+        Read-only GPA property (calculated; cannot be set directly).
         """
         return self.calculate_gpa()
 
@@ -84,22 +93,25 @@ class Student(Person):
             return "Good Standing"
         return "Probation"
 
+    def get_responsibilities(self) -> str:
+        """
+        Polymorphism override: student responsibilities.
+        """
+        return "Attend lectures, complete coursework, sit exams, and follow academic integrity rules."
+
     def get_info(self) -> str:
         """
-        Extend base info with student details.
+        Extend Person.get_info() by adding student-specific details.
         """
         base = super().get_info()
+        courses = ", ".join(self.enrolled_courses) if self.enrolled_courses else "None"
+
         return (
             f"{base}\n"
             f"Student ID: {self.student_id}\n"
             f"Major: {self.major}\n"
             f"Enrollment Date: {self.enrollment_date}\n"
-            f"Courses Enrolled: {', '.join(self.enrolled_courses) if self.enrolled_courses else 'None'}\n"
-            f"GPA: {self.gpa:.2f} ({self.get_academic_status()})"
+            f"Enrolled Courses: {courses}\n"
+            f"GPA: {self.gpa:.2f}\n"
+            f"Academic Status: {self.get_academic_status()}"
         )
-
-    def get_responsibilities(self) -> str:
-        """
-        Polymorphism override.
-        """
-        return "Attend lectures, complete assignments, sit exams, and maintain academic integrity."

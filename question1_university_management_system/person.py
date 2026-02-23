@@ -1,15 +1,26 @@
 """
 person.py
-Base class for the University Management System.
+
+Defines the base Person class for the University Management System.
+This class demonstrates encapsulation and serves as a parent
+class for Student, Faculty, and Staff.
 """
 
 
 class Person:
     """
-    Base class representing a generic person in the university system.
+    Base class representing a person in the university system.
     """
 
     def __init__(self, name: str, person_id: str, email: str, phone: str):
+        """
+        Initialize a Person object.
+
+        :param name: Full name of the person
+        :param person_id: Unique identifier
+        :param email: Email address
+        :param phone: Phone number
+        """
         self.name = name
         self.person_id = person_id
         self.email = email
@@ -26,7 +37,7 @@ class Person:
             f"Phone: {self.phone}"
         )
 
-    def update_contact(self, email: str | None = None, phone: str | None = None) -> None:
+    def update_contact(self, email: str = None, phone: str = None) -> None:
         """
         Update contact details.
         """
@@ -37,6 +48,7 @@ class Person:
 
     def get_responsibilities(self) -> str:
         """
-        Polymorphism method: overridden in subclasses.
+        Method intended to be overridden by subclasses.
+        Demonstrates polymorphism.
         """
         return "General university responsibilities."

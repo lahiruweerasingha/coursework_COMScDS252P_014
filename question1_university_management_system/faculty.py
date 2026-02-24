@@ -1,12 +1,18 @@
 """
 faculty.py
-Faculty class derived from Person.
+
+Defines the Faculty class extending Person.
+Represents academic staff responsible for teaching and research.
 """
 
 from person import Person
 
 
 class Faculty(Person):
+    """
+    Represents a faculty member in the university system.
+    """
+
     def __init__(
         self,
         name: str,
@@ -23,6 +29,9 @@ class Faculty(Person):
         self.hire_date = hire_date
 
     def get_info(self) -> str:
+        """
+        Extend Person.get_info() with faculty details.
+        """
         base = super().get_info()
         return (
             f"{base}\n"
@@ -32,4 +41,7 @@ class Faculty(Person):
         )
 
     def get_responsibilities(self) -> str:
-        return "Teach courses, supervise students, conduct research, and contribute to academic service."
+        """
+        Polymorphism override: faculty responsibilities.
+        """
+        return "Deliver lectures, supervise students, conduct research, and contribute to academic development."

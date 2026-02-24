@@ -1,19 +1,26 @@
 """
 main.py
 
-Demonstration script for the University Management System.
-Shows object creation, enrollment, GPA calculation,
-polymorphism, and department management.
+Final demonstration script for the University Management System.
+Demonstrates:
+- Object creation
+- Enrollment
+- GPA calculation
+- Academic status
+- Polymorphism
+- Course capacity
+- Department summary
 """
 
 from student import Student
 from faculty import Faculty
-from staff import Staff
 from course import Course
 from department import Department
 
 
 def main():
+
+    print("\n================ UNIVERSITY MANAGEMENT SYSTEM DEMO ================\n")
 
     # Create Department
     ds_department = Department("Data Science")
@@ -31,12 +38,16 @@ def main():
 
     ds_department.add_faculty(faculty1)
 
-    # Create Courses
-    course1 = Course("DS101", "Introduction to Data Science", 3, "Dr. Silva", max_capacity=2)
-    course2 = Course("ML201", "Machine Learning", 4, "Dr. Silva", max_capacity=2)
+    # Create Course
+    course1 = Course(
+        course_code="DS101",
+        course_name="Introduction to Data Science",
+        credits=3,
+        instructor="Dr. Silva",
+        max_capacity=2,
+    )
 
     ds_department.add_course(course1)
-    ds_department.add_course(course2)
 
     # Create Students
     student1 = Student(
@@ -59,7 +70,7 @@ def main():
         enrollment_date="2026-02-23",
     )
 
-    # Enroll Students in Courses
+    # Enroll Students
     course1.add_student(student1)
     course1.add_student(student2)
 
@@ -70,26 +81,28 @@ def main():
     student1.add_grade("DS101", 3.8)
     student2.add_grade("DS101", 2.5)
 
-    # Display Student Information
-    print("----- STUDENT DETAILS -----")
+    # Display Student Details
+    print("----- STUDENT DETAILS -----\n")
     print(student1.get_info())
     print()
     print(student2.get_info())
 
     # Demonstrate Polymorphism
-    print("\n----- RESPONSIBILITIES -----")
+    print("\n----- RESPONSIBILITIES (Polymorphism) -----\n")
     people = [student1, faculty1]
 
     for person in people:
         print(f"{person.name}: {person.get_responsibilities()}")
 
-    # Display Course Info
-    print("\n----- COURSE DETAILS -----")
+    # Show Course Details
+    print("\n----- COURSE DETAILS -----\n")
     print(course1)
 
-    # Display Department Summary
-    print("\n----- DEPARTMENT SUMMARY -----")
+    # Show Department Summary
+    print("\n----- DEPARTMENT SUMMARY -----\n")
     print(ds_department.get_summary())
+
+    print("\n================ END OF DEMO ================\n")
 
 
 if __name__ == "__main__":

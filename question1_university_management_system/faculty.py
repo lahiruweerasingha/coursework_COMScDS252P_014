@@ -11,6 +11,7 @@ from person import Person
 class Faculty(Person):
     """
     Represents a faculty member in the university system.
+    Adds: employee_id, department, hire_date
     """
 
     def __init__(
@@ -22,16 +23,13 @@ class Faculty(Person):
         employee_id: str,
         department: str,
         hire_date: str,
-    ):
+    ) -> None:
         super().__init__(name, person_id, email, phone)
         self.employee_id = employee_id
         self.department = department
         self.hire_date = hire_date
 
     def get_info(self) -> str:
-        """
-        Extend Person.get_info() with faculty details.
-        """
         base = super().get_info()
         return (
             f"{base}\n"
@@ -41,7 +39,4 @@ class Faculty(Person):
         )
 
     def get_responsibilities(self) -> str:
-        """
-        Polymorphism override: faculty responsibilities.
-        """
         return "Deliver lectures, supervise students, conduct research, and contribute to academic development."

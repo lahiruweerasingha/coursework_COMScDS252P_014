@@ -1,7 +1,7 @@
 """
 main.py
 
-Demonstration script covering requirements A-E:
+Demonstration script covering requirements A–E:
 A) 3 objects of each type + inheritance demo
 B) Student enrolls 4–5 courses + grades + GPA + academic status
 C) Validation errors (invalid grade, >6 courses)
@@ -17,6 +17,7 @@ from department import Department
 
 
 def safe_action(label: str, func) -> None:
+    """Run an action and print success/error for clean demonstrations."""
     try:
         func()
         print(f"[OK] {label}")
@@ -31,19 +32,46 @@ def main() -> None:
     print("A) CLASS HIERARCHY & INHERITANCE\n")
 
     # Faculty (3)
-    fac1 = Faculty("Dr. Silva", "F001", "silva@uni.edu", "0711111111", "EMP1001", "Data Science", "2020-01-15")
-    fac2 = Faculty("Dr. Fernando", "F002", "fernando@uni.edu", "0712222222", "EMP1002", "Computer Science", "2019-06-01")
-    fac3 = Faculty("Dr. Perera", "F003", "perera@uni.edu", "0713333333", "EMP1003", "Data Science", "2021-03-20")
+    fac1 = Faculty(
+        "Dr. Silva", "F001", "silva@uni.edu", "0711111111",
+        "EMP1001", "Data Science", "2020-01-15"
+    )
+    fac2 = Faculty(
+        "Dr. Fernando", "F002", "fernando@uni.edu", "0712222222",
+        "EMP1002", "Computer Science", "2019-06-01"
+    )
+    fac3 = Faculty(
+        "Dr. Perera", "F003", "perera@uni.edu", "0713333333",
+        "EMP1003", "Data Science", "2021-03-20"
+    )
 
     # Staff (3)
-    staff1 = Staff("Ms. Nuwan", "T001", "nuwan@uni.edu", "0721111111", "STF2001", "Administrator", "Registry")
-    staff2 = Staff("Mr. Gayan", "T002", "gayan@uni.edu", "0722222222", "STF2002", "Lab Technician", "Computer Science")
-    staff3 = Staff("Ms. Dilani", "T003", "dilani@uni.edu", "0723333333", "STF2003", "Finance Officer", "Finance")
+    staff1 = Staff(
+        "Ms. Nuwan", "T001", "nuwan@uni.edu", "0721111111",
+        "STF2001", "Administrator", "Registry"
+    )
+    staff2 = Staff(
+        "Mr. Gayan", "T002", "gayan@uni.edu", "0722222222",
+        "STF2002", "Lab Technician", "Computer Science"
+    )
+    staff3 = Staff(
+        "Ms. Dilani", "T003", "dilani@uni.edu", "0723333333",
+        "STF2003", "Finance Officer", "Finance"
+    )
 
     # Students (3)
-    stu1 = Student("Lahiru Weerasingha", "S001", "lahiru@stu.edu", "0712345678", "STU3001", "MSc Data Science", "2026-02-23")
-    stu2 = Student("John Perera", "S002", "john@stu.edu", "0723456789", "STU3002", "MSc Data Science", "2026-02-23")
-    stu3 = Student("Amaya Silva", "S003", "amaya@stu.edu", "0734567890", "STU3003", "BSc Computer Science", "2026-02-20")
+    stu1 = Student(
+        "Lahiru Weerasingha", "S001", "lahiru@stu.edu", "0712345678",
+        "STU3001", "MSc Data Science", "2026-02-23"
+    )
+    stu2 = Student(
+        "John Perera", "S002", "john@stu.edu", "0723456789",
+        "STU3002", "MSc Data Science", "2026-02-23"
+    )
+    stu3 = Student(
+        "Amaya Silva", "S003", "amaya@stu.edu", "0734567890",
+        "STU3003", "BSc Computer Science", "2026-02-20"
+    )
 
     # Demonstrate method inheritance: update_contact() inherited from Person
     print("Inheritance demo: update_contact() used on Student and Staff\n")
@@ -55,8 +83,14 @@ def main() -> None:
     # ---------- E) Create 2 departments with 3–4 courses each ----------
     print("E) DEPARTMENTS + COURSES\n")
 
+    # dept_head is automatically added to faculty_list by Department.__init__ (in our spec-aligned design)
     dept_ds = Department("Data Science", dept_head=fac1)
     dept_cs = Department("Computer Science", dept_head=fac2)
+
+    # Add extra faculty (do NOT re-add the head again)
+    dept_ds.add_faculty(fac3)
+    # Optional: Add an additional faculty to CS to look stronger (not required)
+    # dept_cs.add_faculty(fac1)
 
     # DS courses (3)
     ds101 = Course("DS101", "Intro to Data Science", 3, instructor=fac1.name, max_capacity=2)
@@ -72,9 +106,6 @@ def main() -> None:
         dept_ds.add_course(c)
     for c in [cs101, cs201, cs301]:
         dept_cs.add_course(c)
-
-    dept_ds.add_faculty(fac3)
-    dept_cs.add_faculty(fac2)
 
     print(dept_ds.get_department_info(), "\n")
     print(dept_cs.get_department_info(), "\n")
@@ -97,10 +128,13 @@ def main() -> None:
     print("\nStudent details (GPA + status):\n")
     print(stu1.get_info())
 
-    # ---------- C) Validation & Error Handling ----------
+    # ---------- C) Encapsulation & Validation ----------
     print("\nC) VALIDATION & ERROR HANDLING\n")
+
+    # invalid grade
     safe_action("Try invalid grade DS101=4.5", lambda: stu1.add_grade("DS101", 4.5))
 
+    # exceed max 6 courses: stu1 currently has 5, add 6th, then try 7th
     safe_action("Enroll stu1 in CS301 (6th course)", lambda: cs301.add_student(stu1))
     safe_action("Attempt 7th course enrollment (should fail)", lambda: stu1.enroll_course("EXTRA701"))
 
@@ -112,7 +146,7 @@ def main() -> None:
     for p in people:
         print(f"{p.name}: {p.get_responsibilities()}")
 
-    # Extra: Course capacity demo (DS101 max 2)
+    # Extra: Course capacity demo 
     print("\nCourse capacity demo (DS101 max 2)\n")
     safe_action("Enroll stu2 in DS101", lambda: ds101.add_student(stu2))
     safe_action("Enroll stu3 in DS101 (should fail)", lambda: ds101.add_student(stu3))
